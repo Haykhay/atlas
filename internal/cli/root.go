@@ -3,6 +3,11 @@ package cli
 
 import (
 	"github.com/spf13/cobra"
+
+	// Register built-in providers.
+	_ "github.com/silverstreaminnovations/atlas/internal/provider/anthropic"
+	_ "github.com/silverstreaminnovations/atlas/internal/provider/ollama"
+	_ "github.com/silverstreaminnovations/atlas/internal/provider/openai"
 )
 
 // Version is injected at build time via
@@ -22,7 +27,7 @@ func NewRootCmd() *cobra.Command {
 			return cmd.Help()
 		},
 	}
-	root.AddCommand(newVersionCmd())
+	root.AddCommand(newVersionCmd(), newProvidersCmd())
 	return root
 }
 

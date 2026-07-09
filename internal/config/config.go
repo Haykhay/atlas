@@ -12,8 +12,10 @@ import (
 )
 
 // ProviderConfig holds per-provider settings such as the default model.
+// Secrets never live here — they belong to the OS keychain.
 type ProviderConfig struct {
-	Model string `yaml:"model,omitempty"`
+	Model   string `yaml:"model,omitempty"`
+	BaseURL string `yaml:"base_url,omitempty"`
 }
 
 // Config is the on-disk Atlas configuration.
