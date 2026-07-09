@@ -1,20 +1,27 @@
 package cli
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
 	"github.com/Haykhay/atlas/internal/config"
 	"github.com/Haykhay/atlas/internal/credentials"
+	"github.com/Haykhay/atlas/internal/provider"
 )
 
 func TestConfigureSelectsProviderAndSetsDefault(t *testing.T) {
 	t.Setenv("ATLAS_CONFIG_DIR", t.TempDir())
 	credentials.MockForTesting()
 
-	// provider.Names() is sorted: anthropic(1), ollama(2), openai(3).
-	// Choose ollama, accept default base URL.
-	out, err := runCmd(t, "2\n\n", "configure")
+	// Choose ollama by its menu position, then accept the default base URL.
+	choice := 0
+	for i, n := range provider.Names() {
+		if n == "ollama" {
+			choice = i + 1
+		}
+	}
+	out, err := runCmd(t, fmt.Sprintf("%d\n\n", choice), "configure")
 	if err != nil {
 		t.Fatalf("configure: %v", err)
 	}
