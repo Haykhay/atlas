@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+
+	"github.com/silverstreaminnovations/atlas/internal/cli"
+)
 
 func main() {
-	fmt.Println("atlas")
+	if err := cli.Execute(); err != nil {
+		fmt.Fprintln(os.Stderr, "atlas:", err)
+		os.Exit(1)
+	}
 }
