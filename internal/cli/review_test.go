@@ -46,6 +46,27 @@ func TestReviewTerraformOfflineHuman(t *testing.T) {
 	}
 }
 
+func TestReviewKubernetesOfflineHuman(t *testing.T) {
+	t.Setenv("ATLAS_CONFIG_DIR", t.TempDir())
+	credentials.MockForTesting()
+
+	dir := t.TempDir()
+	manifest := "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\nspec:\n  replicas: 1\n  template:\n    spec:\n      containers:\n        - name: app\n          image: nginx:latest\n          securityContext:\n            privileged: true\n"
+	if err := os.WriteFile(filepath.Join(dir, "app.yaml"), []byte(manifest), 0o600); err != nil {
+		t.Fatalf("write: %v", err)
+	}
+
+	out, err := runCmd(t, "", "review", "kubernetes", dir, "--offline")
+	if err != nil {
+		t.Fatalf("review: %v", err)
+	}
+	for _, want := range []string{"AWS Well-Architected Scores", "[CRITICAL]", "Privileged container", "Deployment/web"} {
+		if !strings.Contains(out, want) {
+			t.Errorf("output missing %q:\n%s", want, out)
+		}
+	}
+}
+
 func TestReviewTerraformJSONFormat(t *testing.T) {
 	t.Setenv("ATLAS_CONFIG_DIR", t.TempDir())
 	credentials.MockForTesting()

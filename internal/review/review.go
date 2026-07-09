@@ -6,6 +6,7 @@ package review
 import (
 	"context"
 
+	"github.com/Haykhay/atlas/internal/aireview"
 	"github.com/Haykhay/atlas/internal/finding"
 	"github.com/Haykhay/atlas/internal/provider"
 	"github.com/Haykhay/atlas/internal/terraform"
@@ -17,6 +18,38 @@ type Report struct {
 	PillarScores []waf.PillarScore `json:"pillar_scores"`
 	Findings     []finding.Finding `json:"findings"`
 	Warnings     []string          `json:"warnings,omitempty"`
+}
+
+// aiAnalyze runs AI analysis and appends validated findings; every
+// failure mode becomes a warning, never an error.
+func aiAnalyze(
+	ctx context.Context,
+	ai provider.Adapter,
+	read func() (map[string]string, error),
+	system string,
+	prompt func(map[string]string) string,
+	findings *[]finding.Finding,
+) []string {
+	if ai == nil {
+		return nil
+	}
+	files, err := read()
+	if err != nil {
+		return []string{"AI analysis skipped: " + err.Error()}
+	}
+	if len(files) == 0 {
+		return nil
+	}
+	resp, err := ai.Complete(ctx, provider.Request{System: system, Prompt: prompt(files)})
+	if err != nil {
+		return []string{"AI analysis unavailable: " + err.Error()}
+	}
+	aiFindings, err := aireview.ParseFindings(resp.Text)
+	if err != nil {
+		return []string{"AI response could not be parsed: " + err.Error()}
+	}
+	*findings = append(*findings, aiFindings...)
+	return nil
 }
 
 // Terraform reviews Terraform directories. AI must already be wrapped
@@ -33,32 +66,9 @@ func (t *Terraform) Run(ctx context.Context, dir string) (Report, error) {
 		return Report{}, err
 	}
 	findings := terraform.RunRules(resources)
-	var warnings []string
-
-	if t.AI != nil {
-		files, err := terraform.ReadTFFiles(dir)
-		switch {
-		case err != nil:
-			warnings = append(warnings, "AI analysis skipped: "+err.Error())
-		case len(files) == 0:
-			// nothing to analyze
-		default:
-			resp, err := t.AI.Complete(ctx, provider.Request{
-				System: terraform.SystemPrompt,
-				Prompt: terraform.FilesPrompt(files),
-			})
-			if err != nil {
-				warnings = append(warnings, "AI analysis unavailable: "+err.Error())
-				break
-			}
-			aiFindings, err := terraform.ParseAIFindings(resp.Text)
-			if err != nil {
-				warnings = append(warnings, "AI response could not be parsed: "+err.Error())
-				break
-			}
-			findings = append(findings, aiFindings...)
-		}
-	}
+	warnings := aiAnalyze(ctx, t.AI,
+		func() (map[string]string, error) { return terraform.ReadTFFiles(dir) },
+		terraform.SystemPrompt, terraform.FilesPrompt, &findings)
 
 	return Report{
 		PillarScores: waf.Score(findings),
