@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/silverstreaminnovations/atlas/internal/provider"
+	"github.com/Haykhay/atlas/internal/provider"
 )
 
 const (

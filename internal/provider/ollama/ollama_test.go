@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/silverstreaminnovations/atlas/internal/provider"
+	"github.com/Haykhay/atlas/internal/provider"
 )
 
 func TestCompleteSendsChatRequest(t *testing.T) {

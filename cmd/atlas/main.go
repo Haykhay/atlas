@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/silverstreaminnovations/atlas/internal/cli"
+	"github.com/Haykhay/atlas/internal/cli"
 )
 
 func main() {

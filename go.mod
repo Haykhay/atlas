@@ -1,4 +1,4 @@
-module github.com/silverstreaminnovations/atlas
+module github.com/Haykhay/atlas
 
 go 1.26.5
 

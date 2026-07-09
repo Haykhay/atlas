@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/silverstreaminnovations/atlas/internal/provider"
+	"github.com/Haykhay/atlas/internal/provider"
 )
 
 const (

@@ -6,8 +6,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/silverstreaminnovations/atlas/internal/config"
-	"github.com/silverstreaminnovations/atlas/internal/provider"
+	"github.com/Haykhay/atlas/internal/config"
+	"github.com/Haykhay/atlas/internal/provider"
 )
 
 func newConfigureCmd() *cobra.Command {

@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/silverstreaminnovations/atlas/internal/config"
-	"github.com/silverstreaminnovations/atlas/internal/credentials"
+	"github.com/Haykhay/atlas/internal/config"
+	"github.com/Haykhay/atlas/internal/credentials"
 )
 
 func runCmd(t *testing.T, stdin string, args ...string) (string, error) {

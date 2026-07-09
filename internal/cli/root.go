@@ -5,13 +5,13 @@ import (
 	"github.com/spf13/cobra"
 
 	// Register built-in providers.
-	_ "github.com/silverstreaminnovations/atlas/internal/provider/anthropic"
-	_ "github.com/silverstreaminnovations/atlas/internal/provider/ollama"
-	_ "github.com/silverstreaminnovations/atlas/internal/provider/openai"
+	_ "github.com/Haykhay/atlas/internal/provider/anthropic"
+	_ "github.com/Haykhay/atlas/internal/provider/ollama"
+	_ "github.com/Haykhay/atlas/internal/provider/openai"
 )
 
 // Version is injected at build time via
-// -ldflags "-X github.com/silverstreaminnovations/atlas/internal/cli.Version=v1.2.3".
+// -ldflags "-X github.com/Haykhay/atlas/internal/cli.Version=v1.2.3".
 var Version = "dev"
 
 // NewRootCmd builds the atlas command tree. Tests construct their own

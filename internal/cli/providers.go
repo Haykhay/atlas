@@ -13,9 +13,9 @@ import (
 	"github.com/spf13/cobra"
 	"golang.org/x/term"
 
-	"github.com/silverstreaminnovations/atlas/internal/config"
-	"github.com/silverstreaminnovations/atlas/internal/credentials"
-	"github.com/silverstreaminnovations/atlas/internal/provider"
+	"github.com/Haykhay/atlas/internal/config"
+	"github.com/Haykhay/atlas/internal/credentials"
+	"github.com/Haykhay/atlas/internal/provider"
 )
 
 func newProvidersCmd() *cobra.Command {

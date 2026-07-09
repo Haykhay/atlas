@@ -1,6 +1,6 @@
 BINARY  := atlas
 VERSION ?= dev
-LDFLAGS := -s -w -X github.com/silverstreaminnovations/atlas/internal/cli.Version=$(VERSION)
+LDFLAGS := -s -w -X github.com/Haykhay/atlas/internal/cli.Version=$(VERSION)
 
 .PHONY: build test lint cover
 

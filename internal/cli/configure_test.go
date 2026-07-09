@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/silverstreaminnovations/atlas/internal/config"
-	"github.com/silverstreaminnovations/atlas/internal/credentials"
+	"github.com/Haykhay/atlas/internal/config"
+	"github.com/Haykhay/atlas/internal/credentials"
 )
 
 func TestConfigureSelectsProviderAndSetsDefault(t *testing.T) {
