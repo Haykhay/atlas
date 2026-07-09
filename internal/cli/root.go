@@ -1,3 +1,4 @@
+// Package cli defines the atlas command tree.
 package cli
 
 import (
@@ -17,7 +18,7 @@ func NewRootCmd() *cobra.Command {
 		Long:          "Atlas reviews, explains, and documents cloud infrastructure using the AI provider of your choice.",
 		SilenceUsage:  true,
 		SilenceErrors: true,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			return cmd.Help()
 		},
 	}
@@ -25,6 +26,7 @@ func NewRootCmd() *cobra.Command {
 	return root
 }
 
+// Execute runs the atlas CLI with os.Args; it is the production entrypoint.
 func Execute() error {
 	return NewRootCmd().Execute()
 }

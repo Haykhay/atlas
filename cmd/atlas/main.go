@@ -1,3 +1,4 @@
+// Command atlas is the entrypoint for the Atlas CLI.
 package main
 
 import (

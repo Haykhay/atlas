@@ -11,10 +11,12 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// ProviderConfig holds per-provider settings such as the default model.
 type ProviderConfig struct {
 	Model string `yaml:"model,omitempty"`
 }
 
+// Config is the on-disk Atlas configuration.
 type Config struct {
 	DefaultProvider string                    `yaml:"default_provider,omitempty"`
 	Providers       map[string]ProviderConfig `yaml:"providers,omitempty"`
@@ -41,12 +43,14 @@ func filePath() (string, error) {
 	return filepath.Join(dir, "config.yaml"), nil
 }
 
+// Load reads config.yaml from the Atlas config directory, returning
+// initialized defaults when the file does not exist yet.
 func Load() (*Config, error) {
 	p, err := filePath()
 	if err != nil {
 		return nil, err
 	}
-	data, err := os.ReadFile(p)
+	data, err := os.ReadFile(p) // #nosec G304 -- path is derived from the OS user config dir, not user input
 	if errors.Is(err, os.ErrNotExist) {
 		return &Config{Providers: map[string]ProviderConfig{}}, nil
 	}
@@ -63,6 +67,7 @@ func Load() (*Config, error) {
 	return cfg, nil
 }
 
+// Save writes the config as YAML with owner-only permissions.
 func Save(cfg *Config) error {
 	p, err := filePath()
 	if err != nil {
