@@ -5,3 +5,9 @@ linters:
   enable:
     - revive
     - gosec
+  settings:
+    errcheck:
+      exclude-functions:
+        - fmt.Fprint
+        - fmt.Fprintf
+        - fmt.Fprintln
