@@ -27,7 +27,7 @@ func NewRootCmd() *cobra.Command {
 			return cmd.Help()
 		},
 	}
-	root.AddCommand(newVersionCmd(), newProvidersCmd(), newConfigureCmd(), newReviewCmd(), newExplainCmd())
+	root.AddCommand(newVersionCmd(), newProvidersCmd(), newConfigureCmd(), newReviewCmd(), newExplainCmd(), newDocumentCmd())
 	return root
 }
 
