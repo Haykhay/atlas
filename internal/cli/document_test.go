@@ -32,7 +32,7 @@ func TestDocumentTerraformOutWritesFile(t *testing.T) {
 	if _, err := runCmd(t, "", "document", "terraform", reviewFixtureDir(t), "--out", target); err != nil {
 		t.Fatalf("document: %v", err)
 	}
-	data, err := os.ReadFile(target)
+	data, err := os.ReadFile(target) // #nosec G304 -- test-controlled temp path
 	if err != nil || !strings.Contains(string(data), "Resource Inventory") {
 		t.Fatalf("file not written: %v", err)
 	}

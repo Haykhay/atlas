@@ -18,3 +18,21 @@ release:
   github:
     owner: Haykhay
     name: atlas
+dockers_v2:
+  - images:
+      - ghcr.io/haykhay/atlas
+    tags:
+      - "{{ .Version }}"
+      - latest
+    dockerfile: Dockerfile
+    platforms:
+      - linux/amd64
+homebrew_casks:
+  - name: atlas
+    repository:
+      owner: Haykhay
+      name: homebrew-tap
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    homepage: https://github.com/Haykhay/atlas
+    description: "AI-native infrastructure engineering CLI"
+    skip_upload: '{{ if not .Env.TAP_GITHUB_TOKEN }}true{{ end }}'
